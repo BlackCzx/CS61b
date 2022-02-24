@@ -99,7 +99,7 @@ public class IntList {
         if(A == null && B != null){
             return new IntList(B.first,catenate(A, B.rest));
         }
-        if(B == null){
+        if(A== null && B == null){
             return null;
         }
         return new IntList(A.first,catenate(A.rest, B));
