@@ -81,6 +81,14 @@ public class IntList {
      */
 
     public static IntList dcatenate(IntList A, IntList B) {
+        if (A == null){
+            return B;
+        }
+        A.rest=dcatenate(A.rest, B);
+        return A;
+    }
+
+    public static IntList dcatenateIterative(IntList A, IntList B) {
         IntList ptr = A;
         if( ptr == null){
             A = B;
@@ -93,6 +101,7 @@ public class IntList {
         }
         return A;
     }
+
 
     /**
      * Returns a list consisting of the elements of A followed by the
