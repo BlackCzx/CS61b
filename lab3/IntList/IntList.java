@@ -166,6 +166,38 @@ public class IntList {
         return A;
     }
 
+    public static IntList reverseRHelper(IntList A) {
+        if(A == null || A.rest == null) {
+            return A;
+        }
+        else {
+            IntList second = A.rest;
+            IntList last = reverseRHelper(second);
+            second.rest = A;
+            A.rest = null;
+            return last;
+        }
+    }
+
+    public static IntList reverseR(IntList A) {
+        return reverseRHelper(A);
+    }
+
+    public static IntList reverseI(IntList A) {
+        if(A == null || A.rest == null) {
+            return A;
+        }
+        IntList second = A.rest;
+        A.rest = null;
+        while(second != null) {
+            IntList tmp = second.rest;
+            second.rest = A;
+            A = second;
+            second = tmp;
+        }
+        return A;
+    }
+
 
 
 
