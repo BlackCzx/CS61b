@@ -92,8 +92,7 @@ public class IntList {
         IntList ptr = A;
         if (ptr == null) {
             A = B;
-        }
-        else {
+        } else {
             while (ptr.rest != null) {
                 ptr = ptr.rest;
             }
@@ -109,20 +108,18 @@ public class IntList {
      */
 
     public static IntList catenate(IntList A, IntList B) {
-        //TODO:  fill in method
-        if(A == null && B != null){
-            return new IntList(B.first,catenate(A, B.rest));
+        if (A == null && B != null) {
+            return new IntList(B.first, catenate(A, B.rest));
         }
-        if(A== null && B == null){
+        if (A == null && B == null) {
             return null;
         }
-        return new IntList(A.first,catenate(A.rest, B));
+        return new IntList(A.first, catenate(A.rest, B));
     }
 
 
 
     public static IntList catenateIterative(IntList A, IntList B) {
-        //TODO:  fill in method
         IntList C = new IntList();
         IntList ptr = C;
         while (A.rest != null) {
@@ -146,7 +143,7 @@ public class IntList {
     }
 
     public static IntList reversePtr(IntList ptr) {
-        if(ptr.rest == null) {
+        if (ptr.rest == null) {
             return ptr;
         }
         reversePtr(ptr.rest).rest = ptr;
@@ -155,11 +152,11 @@ public class IntList {
     }
 
     public static IntList reverse(IntList A) {
-        if(A == null) {
+        if (A == null) {
             return A;
         }
         IntList ptr = A;
-        while(A.rest != null) {
+        while (A.rest != null) {
             A = A.rest;
         }
         ptr = reversePtr(ptr);
@@ -167,10 +164,9 @@ public class IntList {
     }
 
     public static IntList reverseRHelper(IntList A) {
-        if(A == null || A.rest == null) {
+        if (A == null || A.rest == null) {
             return A;
-        }
-        else {
+        } else {
             IntList second = A.rest;
             IntList last = reverseRHelper(second);
             second.rest = A;
@@ -184,12 +180,12 @@ public class IntList {
     }
 
     public static IntList reverseI(IntList A) {
-        if(A == null || A.rest == null) {
+        if (A == null || A.rest == null) {
             return A;
         }
         IntList second = A.rest;
         A.rest = null;
-        while(second != null) {
+        while (second != null) {
             IntList tmp = second.rest;
             second.rest = A;
             A = second;
