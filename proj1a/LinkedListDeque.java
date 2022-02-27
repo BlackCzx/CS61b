@@ -104,7 +104,7 @@ public class LinkedListDeque<T> {
         return getRecursiveHelper(sentinel.next, index);
     }
 
-    public T getRecursiveHelper(Node front, int index) {
+    private T getRecursiveHelper(Node front, int index) {
         if (front == sentinel) {
             return null;
         } else if (index == 0) {
