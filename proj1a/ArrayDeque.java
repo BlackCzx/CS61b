@@ -21,7 +21,6 @@ public class ArrayDeque<T> {
 
     /** Copy items from first to last in a circular way to newItems from 0 to size-1,
      *  and renew the capacity. */
-
     private void copyCirArray(int first, int last, double reFactor) {
         if (isEmpty()) {
             return;
@@ -102,7 +101,7 @@ public class ArrayDeque<T> {
         T ret = items[first];
         size--;
         nextFirst = first;
-        if ((double)size / (double)capacityOfArray <= 0.25) {
+        if ((double) size / (double) capacityOfArray <= 0.25) {
             resize(sizeDownFactor);
         }
         return ret;
@@ -116,7 +115,7 @@ public class ArrayDeque<T> {
         T ret = items[last];
         size--;
         nextLast = last;
-        if ((double)size / (double)capacityOfArray <= 0.25) {
+        if ((double) size / (double) capacityOfArray <= 0.25) {
             resize(sizeDownFactor);
         }
         return ret;
