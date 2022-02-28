@@ -96,7 +96,7 @@ public class ArrayDeque<T> {
         T ret = items[first];
         size--;
         nextFirst = first;
-        if (size / capacityOfArray <= 0.25) {
+        if ((double)size / (double)capacityOfArray <= 0.25) {
             resize(sizeDownFactor);
         }
         return ret;
@@ -107,7 +107,7 @@ public class ArrayDeque<T> {
         T ret = items[last];
         size--;
         nextLast = last;
-        if (size / capacityOfArray <= 0.25) {
+        if ((double)size / (double)capacityOfArray <= 0.25) {
             resize(sizeDownFactor);
         }
         return ret;
