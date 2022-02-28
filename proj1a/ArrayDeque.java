@@ -26,10 +26,13 @@ public class ArrayDeque<T> {
         int n = 0;
         int newCapacityOfArray = (int) (capacityOfArray * reFactor);
         T[] newItems = (T[]) new Object[newCapacityOfArray];
-        for (int i = first; i <= last; i = (i + 1) % capacityOfArray) {
+        int i = first;
+        while (i != last) {
             newItems[n] = items[i];
+            i = (i + 1) % capacityOfArray;
             n++;
         }
+        newItems[n] = items[i];
         items = newItems;
         capacityOfArray = newCapacityOfArray;
         newItems = null;
