@@ -11,7 +11,7 @@ public class ArrayDeque<T> {
 
     public ArrayDeque() {
         capacityOfArray = 8;
-        T[] items = (T[]) new Object[capacityOfArray];
+        items = (T[]) new Object[capacityOfArray];
         size = 0;
         nextFirst = 0;
         nextLast = 1;
@@ -75,11 +75,17 @@ public class ArrayDeque<T> {
     }
 
     public void printDeque() {
+        if (isEmpty()) {
+            return;
+        }
         int first = (nextFirst + 1) % capacityOfArray;
         int last = (nextLast - 1 + capacityOfArray) % capacityOfArray;
-        for (int i = first; i <= last; i = (i + 1) % capacityOfArray) {
-            System.out.println(items[i]+" ");
+        int i = first;
+        while (i != last) {
+            System.out.println(items[i] + " ");
+            i = (i + 1) % capacityOfArray;
         }
+        System.out.println(items[i]);
     }
 
     public T removeFirst() {
@@ -98,7 +104,7 @@ public class ArrayDeque<T> {
         T ret = items[last];
         size--;
         nextLast = last;
-        if (size / capacityOfArray <=0.25) {
+        if (size / capacityOfArray <= 0.25) {
             resize(sizeDownFactor);
         }
         return ret;
