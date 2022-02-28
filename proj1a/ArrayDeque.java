@@ -23,6 +23,9 @@ public class ArrayDeque<T> {
      *  and renew the capacity. */
 
     private void copyCirArray(int first, int last, double reFactor) {
+        if (isEmpty()) {
+            return;
+        }
         int n = 0;
         int newCapacityOfArray = (int) (capacityOfArray * reFactor);
         T[] newItems = (T[]) new Object[newCapacityOfArray];
@@ -92,6 +95,9 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst() {
+        if (isEmpty()) {
+            return null;
+        }
         int first = (nextFirst + 1) % capacityOfArray;
         T ret = items[first];
         size--;
@@ -103,6 +109,9 @@ public class ArrayDeque<T> {
     }
 
     public T removeLast() {
+        if (isEmpty()) {
+            return null;
+        }
         int last = (nextLast - 1 + capacityOfArray) % capacityOfArray;
         T ret = items[last];
         size--;
