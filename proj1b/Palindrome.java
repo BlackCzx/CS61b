@@ -3,7 +3,7 @@ public class Palindrome {
     public Deque<Character> wordToDeque(String word) {
         Deque<Character> ad = new ArrayDeque<>();
         char tmp;
-        for(int i = 0; i < word.length(); i++) {
+        for (int i = 0; i < word.length(); i++) {
             tmp = word.charAt(i);
             ad.addLast(tmp);
         }
@@ -15,13 +15,13 @@ public class Palindrome {
         return isPalindromeHelper(d);
     }
 
-    public boolean isPalindromeHelper(Deque d) {
+    private boolean isPalindromeHelper(Deque d) {
         if (d.size() <= 1) {
             return true;
         }
         if (d.removeFirst() == d.removeLast()) {
             return isPalindromeHelper(d);
-        } else{
+        } else {
             return false;
         }
     }
@@ -31,13 +31,13 @@ public class Palindrome {
         return isPalindromeHelper(d, cc);
     }
 
-    public boolean isPalindromeHelper(Deque<Character> d, CharacterComparator cc) {
+    private boolean isPalindromeHelper(Deque<Character> d, CharacterComparator cc) {
         if (d.size() <= 1) {
             return true;
         }
         if (cc.equalChars(d.removeFirst(), d.removeLast())) {
             return isPalindromeHelper(d, cc);
-        } else{
+        } else {
             return false;
         }
     }
