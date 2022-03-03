@@ -1,7 +1,7 @@
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-public class TestArrayDeuqeGold {
+public class TestArrayDequeGold {
 
     @Test
     public void test1() {
