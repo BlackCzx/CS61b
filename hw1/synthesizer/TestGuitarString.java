@@ -53,7 +53,6 @@ public class TestGuitarString {
 
     }
 
-
     /** Calls tests for GuitarString. */
     public static void main(String[] args) {
         jh61b.junit.textui.runClasses(TestGuitarString.class);
