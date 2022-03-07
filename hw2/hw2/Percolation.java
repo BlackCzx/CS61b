@@ -11,8 +11,6 @@ public class Percolation {
 
     private int virtualTopSite;
     private int virtualBottomSite;
-    private int virtualIsOpenSite;
-
     private int totalOpenNumber;
 
     /** Create N-by-N grid, with all sites initially blocked. */
@@ -23,16 +21,10 @@ public class Percolation {
             this.N = N;
             this.totalOpenNumber = 0;
             grid = new int[N][N];
-            for (int i = 0; i < N; i++) {
-                for (int j = 0; j < N; j++) {
-                    grid[i][j] = 0;
-                }
-            }
             wqu = new WeightedQuickUnionUF(N * N + 2);
             wqu2 = new WeightedQuickUnionUF(N * N + 1);
             virtualTopSite = xyTo1D(N - 1, N - 1) + 1;
             virtualBottomSite = virtualTopSite + 1;
-            //virtualIsOpenSite = virtualBottomSite + 1;
             for (int i = 0; i < N; i++) {
                 wqu.union(xyTo1D(0, i), virtualTopSite);
                 wqu2.union(xyTo1D(0, i), virtualTopSite);
@@ -50,7 +42,7 @@ public class Percolation {
     public void open(int row, int col) {
         if ((row < 0 || row > N - 1) || (col < 0 || col > N - 1)) {
             throw new java.lang.IndexOutOfBoundsException();
-        } else {
+        } else if (!isOpen(row, col)){
             grid[row][col] = 1;
             totalOpenNumber++;
             if ((row - 1 >= 0) && isOpen(row - 1, col)) {
@@ -109,7 +101,7 @@ public class Percolation {
         p.open(1, 1);
         p.open(0,2);
         p.open(2,2);
-        p.open(2, 1);
+        p.open(2, 2);
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 System.out.println("i: " + i + "  j: " + j);
@@ -119,7 +111,7 @@ public class Percolation {
             }
         }
         System.out.println(p.percolates());
-        //System.out.println(p.isFull(2, 1));
+        System.out.println(p.numberOfOpenSites());
     }
 
 }
