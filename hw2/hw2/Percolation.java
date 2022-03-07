@@ -53,21 +53,21 @@ public class Percolation {
         } else {
             grid[row][col] = 1;
             totalOpenNumber++;
-            if (isOpen(row - 1, col)) {
+            if ((row - 1 >= 0) && isOpen(row - 1, col)) {
                 wqu.union(xyTo1D(row, col), xyTo1D(row - 1, col));
                 wqu2.union(xyTo1D(row, col), xyTo1D(row - 1, col));
             }
-            if (isOpen(row + 1, col)) {
+            if ((row + 1 <= N - 1) && isOpen(row + 1, col)) {
                 wqu.union(xyTo1D(row, col), xyTo1D(row + 1, col));
                 wqu2.union(xyTo1D(row, col), xyTo1D(row + 1, col));
             }
-            if (isOpen(row, col - 1)) {
+            if ((col - 1 >= 0) && isOpen(row, col - 1)) {
                 wqu.union(xyTo1D(row, col), xyTo1D(row, col - 1));
-                wqu2.union(xyTo1D(row, col), xyTo1D(row + 1, col));
+                wqu2.union(xyTo1D(row, col), xyTo1D(row, col - 1));
             }
-            if (isOpen(row, col + 1)) {
+            if ((col + 1 <= N - 1) && isOpen(row, col + 1)) {
                 wqu.union(xyTo1D(row, col), xyTo1D(row, col + 1));
-                wqu2.union(xyTo1D(row, col), xyTo1D(row + 1, col));
+                wqu2.union(xyTo1D(row, col), xyTo1D(row, col + 1));
             }
         }
     }
@@ -101,8 +101,15 @@ public class Percolation {
     }
 
     /** Use for unit testing(not required). */
-    //static void main(String[] args) {
-
-    //}
+    public static void main(String[] args) {
+        Percolation p = new Percolation(3);
+        p.open(0, 0);
+        p.open(1, 0);
+        p.open(2, 0);
+        p.open(2, 2);
+        p.open(1, 2);
+        System.out.println(p.percolates());
+        System.out.println(p.isFull(2, 1));
+    }
 
 }
