@@ -47,7 +47,7 @@ public class Percolation {
     }
 
     /** Open the site (row, col) if it is not open already. */
-    void open(int row, int col) {
+    public void open(int row, int col) {
         if ((row < 0 || row > N - 1) || (col < 0 || col > N - 1)) {
             throw new java.lang.IndexOutOfBoundsException();
         } else {
@@ -73,7 +73,7 @@ public class Percolation {
     }
 
     /** Return whether the site (row, col) is open. */
-    boolean isOpen(int row, int col) {
+    public boolean isOpen(int row, int col) {
         if ((row < 0 || row > N - 1) || (col < 0 || col > N - 1)) {
             throw new java.lang.IndexOutOfBoundsException();
         } else {
@@ -82,7 +82,7 @@ public class Percolation {
     }
 
     /** Return whether the site (row, col) is full. */;
-    boolean isFull(int row, int col) {
+    public boolean isFull(int row, int col) {
         if ((row < 0 || row > N - 1) || (col < 0 || col > N - 1)) {
             throw new java.lang.IndexOutOfBoundsException();
         } else {
@@ -91,12 +91,12 @@ public class Percolation {
     }
 
     /** Return the number of open sites. */
-    int numberOfOpenSites() {
+    public int numberOfOpenSites() {
         return totalOpenNumber;
     }
 
     /** Return whether the system percolates. */
-    boolean percolates() {
+    public boolean percolates() {
         return wqu.connected(virtualBottomSite, virtualTopSite);
     }
 
