@@ -20,6 +20,8 @@ public class Percolation {
         if (N <= 0) {
             throw new java.lang.IllegalArgumentException();
         } else {
+            this.N = N;
+            this.totalOpenNumber = 0;
             grid = new int[N][N];
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < N; j++) {
@@ -37,8 +39,6 @@ public class Percolation {
                 wqu.union(xyTo1D(N - 1, i), virtualBottomSite);
             }
         }
-        this.N = N;
-        totalOpenNumber = 0;
     }
 
     /** Convert a 2D coordinates (x, y) to an 1D integer. */
@@ -86,7 +86,7 @@ public class Percolation {
         if ((row < 0 || row > N - 1) || (col < 0 || col > N - 1)) {
             throw new java.lang.IndexOutOfBoundsException();
         } else {
-            return wqu2.connected(virtualTopSite, xyTo1D(row, col));
+            return isOpen(row, col) && wqu2.connected(virtualTopSite, xyTo1D(row, col));
         }
     }
 
@@ -97,19 +97,29 @@ public class Percolation {
 
     /** Return whether the system percolates. */
     public boolean percolates() {
-        return wqu.connected(virtualBottomSite, virtualTopSite);
+        return (numberOfOpenSites() > 0) && wqu.connected(virtualBottomSite, virtualTopSite);
     }
 
     /** Use for unit testing(not required). */
     public static void main(String[] args) {
-        Percolation p = new Percolation(3);
+        int N = 3;
+        Percolation p = new Percolation(N);
         p.open(0, 0);
         p.open(1, 0);
-        p.open(2, 0);
-        p.open(2, 2);
-        p.open(1, 2);
+        p.open(1, 1);
+        p.open(0,2);
+        p.open(2,2);
+        p.open(2, 1);
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                System.out.println("i: " + i + "  j: " + j);
+                System.out.println("isOpen: " + p.isOpen(i, j));
+                System.out.println("isFull: " + p.isFull(i, j));
+                System.out.println();
+            }
+        }
         System.out.println(p.percolates());
-        System.out.println(p.isFull(2, 1));
+        //System.out.println(p.isFull(2, 1));
     }
 
 }
