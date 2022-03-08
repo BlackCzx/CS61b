@@ -42,7 +42,7 @@ public class Percolation {
     public void open(int row, int col) {
         if ((row < 0 || row > N - 1) || (col < 0 || col > N - 1)) {
             throw new java.lang.IndexOutOfBoundsException();
-        } else if (!isOpen(row, col)){
+        } else if (!isOpen(row, col)) {
             grid[row][col] = 1;
             totalOpenNumber++;
             if ((row - 1 >= 0) && isOpen(row - 1, col)) {
@@ -99,8 +99,8 @@ public class Percolation {
         p.open(0, 0);
         p.open(1, 0);
         p.open(1, 1);
-        p.open(0,2);
-        p.open(2,2);
+        p.open(0, 2);
+        p.open(2, 2);
         p.open(2, 2);
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {

@@ -33,7 +33,7 @@ public class PercolationStats {
             col = StdRandom.uniform(gridSize);
             p.open(row, col);
         }
-        return (double)p.numberOfOpenSites() / (double)(gridSize * gridSize);
+        return (double) p.numberOfOpenSites() / (double) (gridSize * gridSize);
     }
 
     public double mean() {
