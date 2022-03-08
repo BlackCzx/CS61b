@@ -1,6 +1,8 @@
 package lab9;
 
 //import java.io.ObjectStreamException;
+//import edu.princeton.cs.algs4.In;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -139,8 +141,9 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         } else if (key.compareTo(p.key) > 0) {
             p.right = removeHelper(key, p.right);
         } else {
+            removedValue = p.value;
+            size--;
             if (p.left != null && p.right != null) {
-                removedValue = p.value;
                 Node maxSuccessor = findMaxSuccessor(p.left);
                 p.key = maxSuccessor.key;
                 p.value = maxSuccessor.value;
