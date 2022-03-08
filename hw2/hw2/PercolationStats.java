@@ -17,10 +17,10 @@ public class PercolationStats {
         }
         gridSize = N;
         iterations = T;
-        p = pf.make(gridSize);
         thresholds = new double[iterations];
 
         for (int i = 0; i < iterations; i++) {
+            p = pf.make(gridSize);
             thresholds[i] = experiment();
         }
     }
