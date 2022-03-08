@@ -1,5 +1,7 @@
 package lab9;
 
+//import java.io.ObjectStreamException;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -27,7 +29,8 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
     private Node root;  /* Root node of the tree. */
     private int size; /* The number of key-value pairs in the tree */
-
+    private Set<K> keys;
+    private V removedValue;
     /* Creates an empty BSTMap. */
     public BSTMap() {
         this.clear();
@@ -99,9 +102,58 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     //////////////// EVERYTHING BELOW THIS LINE IS OPTIONAL ////////////////
 
     /* Returns a Set view of the keys contained in this map. */
+    private void keySetHelper(Node p) {
+        if (p == null) {
+            return;
+        }
+        keys.add(p.key);
+        keySetHelper(p.left);
+        keySetHelper(p.right);
+    }
+
     @Override
     public Set<K> keySet() {
-        throw new UnsupportedOperationException();
+        keys = new HashSet<>();
+        keySetHelper(root);
+        return keys;
+    }
+
+    private Node findMaxSuccessor(Node p) {
+        //Not find in an empty tree.
+        if (p == null) {
+            return null;
+        }
+        if (p.right == null) {
+            return p;
+        }
+        return findMaxSuccessor(p.right);
+    }
+
+
+    private Node removeHelper(K key, Node p) {
+        if (p == null) {
+            return null;
+        }
+        if (key.compareTo(p.key) < 0) {
+            p.left = removeHelper(key, p.left);
+        } else if (key.compareTo(p.key) > 0) {
+            p.right = removeHelper(key, p.right);
+        } else {
+            if (p.left != null && p.right != null) {
+                removedValue = p.value;
+                Node maxSuccessor = findMaxSuccessor(p.left);
+                p.key = maxSuccessor.key;
+                p.value = maxSuccessor.value;
+                p.left = removeHelper(p.key, p.left);
+            } else {
+                if (p.left == null) {
+                    p = p.right;
+                } else if (p.right == null) {
+                    p = p.left;
+                }
+            }
+        }
+        return p;
     }
 
     /** Removes KEY from the tree if present
@@ -110,20 +162,92 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public V remove(K key) {
-        throw new UnsupportedOperationException();
+        root = removeHelper(key, root);
+        return removedValue;
+    }
+
+    private Node getNode(K key, Node p) {
+        if (p == null) {
+            return null;
+        }
+        if (key.compareTo(p.key) < 0) {
+            return getNode(key, p.left);
+        } else if (key.compareTo(p.key) > 0) {
+            return getNode(key, p.right);
+        } else {
+            return p;
+        }
     }
 
     /** Removes the key-value entry for the specified key only if it is
      *  currently mapped to the specified value.  Returns the VALUE removed,
      *  null on failed removal.
      **/
+
     @Override
     public V remove(K key, V value) {
-        throw new UnsupportedOperationException();
+        Node p = getNode(key, root);
+        if (p == null || p.value != value) {
+            return null;
+        }
+        V tmp = p.value;
+        p.value = null;
+        return tmp;
+    }
+
+    public class MyIterator implements Iterator<K> {
+        Queue q;
+
+        private class Queue {
+            Node[] queue;
+            private int front;
+            private int end;
+
+            Queue() {
+                queue = (Node[]) new Object[size];
+                front = 0;
+                end = 0;
+            }
+
+            public void enQueue(Node item) {
+                if (item == null) {
+                    return;
+                }
+                queue[end] = item;
+                end++;
+            }
+
+            public Node deQueue() {
+                Node tmp = queue[front];
+                front++;
+                return tmp;
+            }
+
+            public boolean isEmpty() {
+                return front == end;
+            }
+
+        }
+
+        public MyIterator() {
+            q = new Queue();
+            q.enQueue(root);
+        }
+
+        public boolean hasNext() {
+            return !q.isEmpty();
+        }
+        public K next() {
+            Node tmp = q.deQueue();
+            q.enQueue(tmp.left);
+            q.enQueue(tmp.right);
+            return tmp.key;
+        }
     }
 
     @Override
     public Iterator<K> iterator() {
-        throw new UnsupportedOperationException();
+        return new MyIterator();
     }
+
 }
