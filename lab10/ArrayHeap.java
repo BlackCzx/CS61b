@@ -129,9 +129,15 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         int rightChild = rightIndex(index);
         int minChild = min(leftChild, rightChild);
 
-        if(min(index, minChild) == minChild) {
+        if (min(index, leftChild) == leftChild && min(index, rightChild) == rightChild) {
             swap(index, minChild);
             sink(minChild);
+        } else if (min(index, leftChild) == leftChild) {
+            swap(index, leftChild);
+            sink(leftChild);
+        } else if (min(index, rightChild) == rightChild) {
+            swap(index, rightChild);
+            sink(rightChild);
         }
         return;
     }
