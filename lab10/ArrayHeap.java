@@ -477,8 +477,8 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         pq.insert("e", 5);
         pq.insert("b", 2);
         System.out.println(pq);
-        pq.changePriority("i", 0);
-        System.out.println(pq);
+        pq.changePriority("a", 10);
+        //System.out.println(pq);
     }
 
 }
