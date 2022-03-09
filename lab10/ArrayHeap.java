@@ -186,7 +186,9 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         T min = contents[size].item();
         contents[size] = null;
         size--;
-        sink(1);
+        if (size != 0) {
+            sink(1);
+        }
         return min;
     }
 
@@ -452,7 +454,19 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     }
 
     @Test
-    public void myTest() {
+    public void myTest2() {
+        ArrayHeap<String> pq = new ArrayHeap<>();
+        pq.insert("c", 3);
+        pq.insert("b", 2);
+        String removed = pq.removeMin();
+        assertEquals("b", removed);
+        removed = pq.removeMin();
+        assertEquals("c", removed);
+        assertEquals(0, pq.size());
+    }
+
+    @Test
+    public void myTest3() {
         ArrayHeap<String> pq = new ArrayHeap<>();
         pq.insert("c", 3);
         pq.insert("i", 9);
@@ -462,20 +476,9 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         pq.insert("h", 8);
         pq.insert("e", 5);
         pq.insert("b", 2);
-        pq.insert("c", 3);
-        pq.insert("d", 4);
-        String removed = pq.removeMin();
-        assertEquals("a", removed);
-        assertEquals(9, pq.size());
-        assertEquals("b", pq.contents[1].myItem);
-        assertEquals("c", pq.contents[2].myItem);
-        assertEquals("e", pq.contents[3].myItem);
-        assertEquals("c", pq.contents[4].myItem);
-        assertEquals("d", pq.contents[5].myItem);
-        assertEquals("h", pq.contents[6].myItem);
-        assertEquals("g", pq.contents[7].myItem);
-        assertEquals("i", pq.contents[8].myItem);
-        assertEquals("d", pq.contents[9].myItem);
+        System.out.println(pq);
+        pq.changePriority("i", 0);
+        System.out.println(pq);
     }
 
 }
