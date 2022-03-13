@@ -1,8 +1,12 @@
 package hw4.puzzle;
 import edu.princeton.cs.algs4.MinPQ;
-import edu.princeton.cs.algs4.StdOut;
 
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Comparator;
+import java.util.Stack;
 
 public class Solver {
 
@@ -31,7 +35,7 @@ public class Solver {
         }
     }
 
-    public class SearchNode{
+    public class SearchNode {
 
         private WorldState ws;
         private int alreadyMoved;
@@ -84,7 +88,7 @@ public class Solver {
             pq.insert(new SearchNode(childWs, firstSN, 1));
         }
 
-        while(true) {
+        while (true) {
             SearchNode parent = pq.delMin();
             WorldState parentWs = parent.getWs();
             SearchNode grandParent = parent.getParent();
@@ -108,11 +112,11 @@ public class Solver {
         }
     }
 
-    public int moves(){
+    public int moves() {
         return goal.getAlreadyMoved();
     }
 
-    public Iterable<WorldState> solution(){
+    public Iterable<WorldState> solution() {
         Stack<WorldState> stack = new Stack<>();
         List<WorldState> list = new ArrayList<>();
         SearchNode tmp = goal;
