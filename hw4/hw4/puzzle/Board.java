@@ -118,6 +118,17 @@ public class Board implements WorldState {
         return true;
     }
 
+    public int hashCode() {
+        int hc = 0;
+        int n = 1;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                hc = board[i][j] * n;
+                n++;
+            }
+        }
+        return hc;
+    }
     /** Returns the string representation of the board. 
       * Uncomment this method. */
     public String toString() {
