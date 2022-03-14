@@ -97,6 +97,7 @@ public class Board implements WorldState {
         return manhattan();
     }
 
+    @Override
     public boolean equals(Object y) {
         if (y == null) {
             return false;
@@ -118,6 +119,7 @@ public class Board implements WorldState {
         return true;
     }
 
+    @Override
     public int hashCode() {
         int hc = 0;
         int n = 1;
