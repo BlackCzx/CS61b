@@ -1,4 +1,5 @@
 import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.StdOut;
 
 public class MergeSort {
     /**
@@ -34,8 +35,13 @@ public class MergeSort {
     /** Returns a queue of queues that each contain one item from items. */
     private static <Item extends Comparable> Queue<Queue<Item>>
             makeSingleItemQueues(Queue<Item> items) {
-        // Your code here!
-        return null;
+        Queue<Queue<Item>> queues = new Queue<Queue<Item>>();
+        for (Item item : items) {
+            Queue<Item> q = new Queue<>();
+            q.enqueue(item);
+            queues.enqueue(q);
+        }
+        return queues;
     }
 
     /**
@@ -54,13 +60,42 @@ public class MergeSort {
     private static <Item extends Comparable> Queue<Item> mergeSortedQueues(
             Queue<Item> q1, Queue<Item> q2) {
         // Your code here!
-        return null;
+        Queue<Item> sortedQ = new Queue<>();
+        while(!q1.isEmpty() || !q2.isEmpty()) {
+            Item min = getMin(q1, q2);
+            sortedQ.enqueue(min);
+        }
+        return sortedQ;
     }
 
     /** Returns a Queue that contains the given items sorted from least to greatest. */
     public static <Item extends Comparable> Queue<Item> mergeSort(
             Queue<Item> items) {
-        // Your code here!
-        return items;
+        if (items.size() <= 1) {
+            return items;
+        }
+        Queue<Queue<Item>> queues = makeSingleItemQueues(items);
+        Queue<Item> q1, q2, sortedQ;
+        while (queues.size() > 1) {
+            q1 = queues.dequeue();
+            q2 = queues.dequeue();
+            sortedQ = mergeSortedQueues(q1, q2);
+            queues.enqueue(sortedQ);
+        }
+        return queues.dequeue();
+    }
+
+    public static void main(String[] args) {
+        Queue<Integer> q = new Queue<>();
+        q.enqueue(10);
+        q.enqueue(3);
+        q.enqueue(4);
+        q.enqueue(18);
+        q.enqueue(7);
+        q.enqueue(15);
+        q.enqueue(1);
+        Queue<Integer> sortedQ = MergeSort.mergeSort(q);
+        StdOut.println(q);
+        StdOut.println(sortedQ);
     }
 }
