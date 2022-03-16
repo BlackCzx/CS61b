@@ -65,7 +65,7 @@ public class QuickSort {
         if (items.size() <= 1) {
             return items;
         }
-        Queue<Item> greater, less ,equal;
+        Queue<Item> greater, less, equal;
         greater = new Queue<>();
         less = new Queue<>();
         equal = new Queue<>();
