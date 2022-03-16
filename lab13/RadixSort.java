@@ -25,6 +25,7 @@ public class RadixSort {
         //System.arraycopy(asciis, 0, sorted, 0, asciis.length);
         for (int i = max - 1; i >= 0; i--) {
             sortHelperLSD(asciis, sorted, i);
+            asciis = sorted;
         }
         return sorted;
     }
@@ -75,7 +76,8 @@ public class RadixSort {
     }
 
     public static void main(String[] args) {
-        String[] test = new String[10];
+        String[] test = new String[3];
+        /*
         test[0] = "boolean";
         test[1] = "a";
         test[2] = "dog";
@@ -86,6 +88,11 @@ public class RadixSort {
         test[7] = "aaaaaaaaaaaaaaaaa";
         test[8] = "100";
         test[9] = "";
+         */
+        test[0] = "aaa";
+        test[1] = "a";
+        test[2] = "age";
+
         String[] sorted = sort(test);
         System.out.println("this is unsorted strings");
         for (String s : test) {
