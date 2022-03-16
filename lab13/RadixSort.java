@@ -22,9 +22,9 @@ public class RadixSort {
             max = s.length() > max ? s.length() : max;
         }
         String[] sorted = new String[asciis.length];
-        System.arraycopy(asciis, 0, sorted, 0, asciis.length);
+        //System.arraycopy(asciis, 0, sorted, 0, asciis.length);
         for (int i = max - 1; i >= 0; i--) {
-            sortHelperLSD(sorted, i);
+            sortHelperLSD(asciis, sorted, i);
         }
         return sorted;
     }
@@ -32,14 +32,14 @@ public class RadixSort {
     /**
      * LSD helper method that performs a destructive counting sort the array of
      * Strings based off characters at a specific index.
-     * @param asciis Input array of Strings
+     * @param unsorted Input array of Strings
      * @param index The position to sort the Strings on.
      */
-    private static void sortHelperLSD(String[] asciis, int index) {
-        int[] asciisNum = new int[asciis.length];
+    private static void sortHelperLSD(String[] unsorted, String[] sorted, int index) {
+        int[] asciisNum = new int[unsorted.length];
         int[] count = new int[257];
-        for (int i = 0; i < asciis.length; i++) {
-            String s = asciis[i];
+        for (int i = 0; i < unsorted.length; i++) {
+            String s = unsorted[i];
             int num = index > s.length() - 1 ? 0 : (int) s.charAt(index);
             asciisNum[i] = num;
             count[num]++;
@@ -50,14 +50,12 @@ public class RadixSort {
             start[i] = pos;
             pos += count[i];
         }
-        String[] sorted = new String[asciis.length];
         int n = 0;
         for (int i : asciisNum) {
-            sorted[start[i]] = asciis[n];
+            sorted[start[i]] = unsorted[n];
             start[i]++;
             n++;
         }
-        System.arraycopy(sorted, 0, asciis, 0, asciis.length);
         return;
     }
 
@@ -77,7 +75,7 @@ public class RadixSort {
     }
 
     public static void main(String[] args) {
-        String[] test = new String[9];
+        String[] test = new String[10];
         test[0] = "boolean";
         test[1] = "a";
         test[2] = "dog";
@@ -87,6 +85,7 @@ public class RadixSort {
         test[6] = "2";
         test[7] = "aaaaaaaaaaaaaaaaa";
         test[8] = "100";
+        test[9] = "";
         String[] sorted = sort(test);
         System.out.println("this is unsorted strings");
         for (String s : test) {
