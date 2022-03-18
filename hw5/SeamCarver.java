@@ -1,5 +1,4 @@
 import edu.princeton.cs.algs4.Picture;
-import edu.princeton.cs.algs4.StdRandom;
 
 import java.awt.Color;
 
@@ -181,22 +180,6 @@ public class SeamCarver {
             }
         }
         return transposeEnergy;
-    }
-
-    public static void main(String[] args) {
-        Picture pic = SCUtility.randomPicture(500, 500);
-        SeamCarver sc = new SeamCarver(pic);
-        int[] seam;
-        for (int i = 0; i <100; i++) {
-            double tmp = StdRandom.uniform(0, 1);
-            if (tmp > 0.5) {
-                seam = sc.findHorizontalSeam();
-                sc.removeHorizontalSeam(seam);
-            } else {
-                seam = sc.findVerticalSeam();
-                sc.removeVerticalSeam(seam);
-            }
-        }
     }
 
 }
