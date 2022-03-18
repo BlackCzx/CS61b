@@ -127,11 +127,17 @@ public class SeamCarver {
     }
 
     public void removeHorizontalSeam(int[] seam) {
+        if (seam.length != width) {
+            throw(new IllegalArgumentException());
+        }
         checkIllegal(seam);
         picture = SeamRemover.removeHorizontalSeam(picture, seam);
     }
 
     public void removeVerticalSeam(int[] seam) {
+        if (seam.length != height) {
+            throw(new IllegalArgumentException());
+        }
         checkIllegal(seam);
         picture = SeamRemover.removeVerticalSeam(picture, seam);
     }
