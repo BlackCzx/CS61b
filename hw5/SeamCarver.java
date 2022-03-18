@@ -132,6 +132,7 @@ public class SeamCarver {
         }
         checkIllegal(seam);
         picture = SeamRemover.removeHorizontalSeam(picture, seam);
+        height -= 1;
     }
 
     public void removeVerticalSeam(int[] seam) {
@@ -140,6 +141,7 @@ public class SeamCarver {
         }
         checkIllegal(seam);
         picture = SeamRemover.removeVerticalSeam(picture, seam);
+        width -= 1;
     }
 
     private int getMin(int i, int j, int w, int h) {
