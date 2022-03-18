@@ -1,6 +1,6 @@
 import edu.princeton.cs.algs4.Picture;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class SeamCarver {
 
@@ -25,13 +25,13 @@ public class SeamCarver {
         }
 
         for (int i = 1; i < width + 1; i++) {
-            for (int k = 0; k < 3; k++){
+            for (int k = 0; k < 3; k++) {
                 pixel[i][0][k] = pixel[i][height][k];
                 pixel[i][height + 1][k] = pixel[i][1][k];
             }
         }
 
-        for (int j = 1; j <height + 1; j++) {
+        for (int j = 1; j < height + 1; j++) {
             for (int k = 0; k < 3; k++) {
                 pixel[0][j][k] = pixel[width][j][k];
                 pixel[width + 1][j][k] = pixel[1][j][k];
@@ -142,12 +142,12 @@ public class SeamCarver {
         if (i == 0) {
             start = i;
         }
-        if (i == w - 1){
+        if (i == w - 1) {
             end = i;
         }
         double min = minEnergy[start][j - 1];
         int ret = start;
-        for (int k = start; k <= end; k++){
+        for (int k = start; k <= end; k++) {
             if (minEnergy[k][j - 1] < min) {
                 ret = k;
                 min = minEnergy[k][j - 1];
