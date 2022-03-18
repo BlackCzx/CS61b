@@ -10,7 +10,7 @@ public class SeamCarver {
     private double[][] energy;
     private double[][] minEnergy;
     public SeamCarver(Picture picture) {
-        this.picture = picture;
+        this.picture = new Picture(picture);
         width = picture.width();
         height = picture.height();
         energy = new double[width][height];
@@ -122,6 +122,7 @@ public class SeamCarver {
             if (current - previous > 1 || current - previous < -1) {
                 throw(new IllegalArgumentException());
             }
+            previous = current;
         }
     }
 
