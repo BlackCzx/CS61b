@@ -56,7 +56,7 @@ public class SeamCarver {
     }
 
     public Picture picture() {
-        return picture;
+        return new Picture(picture);
     }
 
     public int width() {
@@ -79,7 +79,7 @@ public class SeamCarver {
         return findVerticalSeamHelper(transposeEnergy, height, width);
     }
 
-    public int[] findVerticalSeamHelper(double[][] e, int w, int h) {
+    private int[] findVerticalSeamHelper(double[][] e, int w, int h) {
         minEnergy = new double[w][h]; //padding
         int[][] parent = new int[w][h];
         for (int i = 0; i < w; i++) {
@@ -133,7 +133,7 @@ public class SeamCarver {
 
     public void removeVerticalSeam(int[] seam) {
         checkIllegal(seam);
-        picture = SeamRemover.removeHorizontalSeam(picture, seam);
+        picture = SeamRemover.removeVerticalSeam(picture, seam);
     }
 
     private int getMin(int i, int j, int w, int h) {
