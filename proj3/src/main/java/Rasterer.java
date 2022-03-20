@@ -16,8 +16,9 @@ public class Rasterer {
     public Rasterer() {
         // YOUR CODE HERE
         lonDPPOfDepth = new double[8];
+        double totalLon = MapServer.ROOT_LRLON - MapServer.ROOT_ULLON;
         for (int i = 0; i < 8; i++) {
-            lonDPPOfDepth[i] = (MapServer.ROOT_LRLON - MapServer.ROOT_ULLON) / (Math.pow(2, i) * MapServer.TILE_SIZE);
+            lonDPPOfDepth[i] = totalLon / (Math.pow(2, i) * MapServer.TILE_SIZE);
         }
     }
     /**
@@ -110,7 +111,7 @@ public class Rasterer {
             for (int j = 0; j < gridWidth; j++) {
                 grid[i][j] = getImageName(i, j, gridULX, gridULY, depth);
             }
-         }
+        }
 
         Map<String, Object> results = new HashMap<>();
         results.put("render_grid", grid);
@@ -135,7 +136,8 @@ public class Rasterer {
         return 7;
     }
 
-    private int[][] findGridIndex(int depth, double uLLon, double uLLat, double lRLon, double lRLat) {
+    private int[][] findGridIndex(int depth, double uLLon, double uLLat,
+                                  double lRLon, double lRLat) {
         double gridSize;
         int[][] gridIndex;
 
@@ -152,13 +154,17 @@ public class Rasterer {
         lRLat = lRLat < MapServer.ROOT_LRLAT ? MapServer.ROOT_LRLAT : lRLat;
 
         // Normal case.
-        gridIndex[0][0] = (int) Math.floor((uLLon - MapServer.ROOT_ULLON) / lonPT); // Upper left index X.
-        gridIndex[0][1] = (int) Math.floor((MapServer.ROOT_ULLAT - uLLat) / latPT); // Upper left index Y.
-        gridIndex[1][0] = (int) Math.floor((lRLon - MapServer.ROOT_ULLON) / lonPT); // Lower right index X.
-        gridIndex[1][1] = (int) Math.floor((MapServer.ROOT_ULLAT - lRLat) / latPT); // Lower right index Y.
+        // Upper left index X.
+        gridIndex[0][0] = (int) Math.floor((uLLon - MapServer.ROOT_ULLON) / lonPT);
+        // Upper left index Y.
+        gridIndex[0][1] = (int) Math.floor((MapServer.ROOT_ULLAT - uLLat) / latPT);
+        // Lower right index X.
+        gridIndex[1][0] = (int) Math.floor((lRLon - MapServer.ROOT_ULLON) / lonPT);
+        // Lower right index Y.
+        gridIndex[1][1] = (int) Math.floor((MapServer.ROOT_ULLAT - lRLat) / latPT);
 
-        gridIndex[1][0] = gridIndex[1][0] > (int) gridSize - 1 ? (int) gridSize - 1 : gridIndex[1][0];
-        gridIndex[1][0] = gridIndex[1][0] > (int) gridSize - 1 ? (int) gridSize - 1 : gridIndex[1][0];
+        gridIndex[1][0] = Math.min((int) gridSize - 1, gridIndex[1][0]);
+        gridIndex[1][1] = Math.min((int) gridSize - 1, gridIndex[1][1]);
 
         return gridIndex;
     }
@@ -182,7 +188,7 @@ public class Rasterer {
         double c = (double) results.get("raster_lr_lon");
         double d = (double) results.get("raster_lr_lat");
         int e = (int) results.get("depth");
-        for (int i = 0; i < s.length; i++){
+        for (int i = 0; i < s.length; i++) {
             for (int j = 0; j < s[0].length; j++) {
                 System.out.print(s[i][j]);
             }
