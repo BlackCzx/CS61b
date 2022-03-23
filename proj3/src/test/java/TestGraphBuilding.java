@@ -114,8 +114,8 @@ public class TestGraphBuilding {
 
     @Test
     public void testDistanceSmall() {
-        long v = 267632001L;
-        long w = 2252623344L;
+        long v = 267632001L; // <node id="267632001" lat="37.8686794" lon="-122.2522749" version="1">
+        long w = 2252623344L; // <node id="2252623344" lat="37.8680558" lon="-122.2520707" version="1"/>
         assertEquals(0.04455059524452295, graphSmall.distance(v, w), 0.00001);
     }
 
