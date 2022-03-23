@@ -104,23 +104,20 @@ public class GraphBuildingHandler extends DefaultHandler {
             String k = attributes.getValue("k");
             String v = attributes.getValue("v");
             if (k.equals("maxspeed")) {
-                //System.out.println("Max Speed: " + v);
-                /* TODO set the max speed of the "current way" here. */
+                System.out.println("Max Speed: " + v);
             } else if (k.equals("highway")) {
                 //System.out.println("Highway type: " + v);
                 if (ALLOWED_HIGHWAY_TYPES.contains(v)) {
                     isValidWay = true;
                 }
-                /* TODO Figure out whether this way and its connections are valid. */
-                /* Hint: Setting a "flag" is good enough! */
             } else if (k.equals("name")) {
-                //System.out.println("Way Name: " + v);
+                System.out.println("Way Name: " + v);
             }
 //            System.out.println("Tag with k=" + k + ", v=" + v + ".");
         } else if (activeState.equals("node") && qName.equals("tag") && attributes.getValue("k")
                 .equals("name")) {
+            System.out.println("for grades!");
             /* While looking at a node, we found a <tag...> with k="name". */
-            /* TODO Create a location. */
             /* Hint: Since we found this <tag...> INSIDE a node, we should probably remember which
             node this tag belongs to. Remember XML is parsed top-to-bottom, so probably it's the
             last node that you looked at (check the first if-case). */

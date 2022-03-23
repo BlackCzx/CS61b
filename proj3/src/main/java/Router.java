@@ -1,7 +1,12 @@
-import javax.swing.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.Stack;
+import java.util.PriorityQueue;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Objects;
 
 /**
  * This class provides a shortestPath method for finding routes between two points
@@ -30,9 +35,9 @@ public class Router {
     private static long start;
     private static long end;
 
-    private static class AStarComparator implements Comparator<Long>{
+    private static class AStarComparator implements Comparator<Long> {
         @Override
-        public int compare(Long o1, Long o2){
+        public int compare(Long o1, Long o2) {
             long id1 = o1;
             long id2 = o2;
             double d1 = distTo.get(id1) + graph.distance(id1, end);

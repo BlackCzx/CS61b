@@ -8,7 +8,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  * Graph for storing all of the intersection (vertex) and road (edge) information.
@@ -95,7 +94,6 @@ public class GraphDB {
      *  we can reasonably assume this since typically roads are connected.
      */
     private void clean2() {
-        // TODO: Your code here.
         int n = 0;
         for (int i = 0; i < graph.size(); i++) {
             Node nd = graph.get(i);
@@ -108,14 +106,13 @@ public class GraphDB {
     }
 
     private void clean() {
-        // TODO: Your code here.
         int n = 0;
         ArrayList<Node> tmp = new ArrayList<>();
         for (Node nd : graph) {
             tmp.add(nd);
         }
         for (Node nd : tmp) {
-            if(nd.adj.isEmpty()) {
+            if (nd.adj.isEmpty()) {
                 removeNode(nd);
             }
         }
