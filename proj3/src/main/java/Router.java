@@ -1,5 +1,5 @@
-import java.util.List;
-import java.util.Objects;
+import javax.swing.*;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,9 +23,86 @@ public class Router {
      * @param destlat The latitude of the destination location.
      * @return A list of node id's in the order visited on the shortest path.
      */
+
+    private static HashMap<Long, Double> distTo;
+    private static HashMap<Long, Long> edgeTo;
+    private static GraphDB graph;
+    private static long start;
+    private static long end;
+
+    private static class AStarComparator implements Comparator<Long>{
+        @Override
+        public int compare(Long o1, Long o2){
+            long id1 = o1;
+            long id2 = o2;
+            double d1 = distTo.get(id1) + graph.distance(id1, end);
+            double d2 = distTo.get(id2) + graph.distance(id2, end);
+            if (d1 < d2) {
+                return -1;
+            } else if (d1 > d2) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+    }
+
     public static List<Long> shortestPath(GraphDB g, double stlon, double stlat,
                                           double destlon, double destlat) {
-        return null; // FIXME
+        graph = g;
+
+        ArrayList<Long> ids = (ArrayList<Long>) g.vertices();
+        start = g.closest(stlon, stlat);
+        end = g.closest(destlon, destlat);
+        AStarComparator asc = new AStarComparator();
+        PriorityQueue<Long> minHeap = new PriorityQueue<>(asc);
+        Stack<Long> stack = new Stack<>();
+        distTo = new HashMap<>();
+        edgeTo = new HashMap<>();
+        distTo.put(start, 0.0);
+        edgeTo.put(start, start);
+        minHeap.add(start);
+        while (true) {
+            long w = minHeap.remove();
+            if (w == end) {
+                while (true) {
+                    stack.push(w);
+                    w = edgeTo.get(w);
+                    if (w == start) {
+                        stack.push(w);
+                        break;
+                    }
+                }
+                break;
+            }
+            for (long v : g.adjacent(w)) {
+                double tmpDistance = distTo.get(w) + g.distance(w, v);
+                if (distTo.containsKey(v)) {
+                    if (tmpDistance < distTo.get(v)) {
+                        distTo.put(v, tmpDistance);
+                        edgeTo.put(v, w);
+                        if (minHeap.contains(v)) {
+                            minHeap.remove(v);
+                        }
+                        minHeap.add(v);
+                    }
+                } else {
+                    distTo.put(v, tmpDistance);
+                    edgeTo.put(v, w);
+                    if (minHeap.contains(v)) {
+                        minHeap.remove(v);
+                    }
+                    minHeap.add(v);
+                }
+            }
+        }
+        ArrayList<Long> path = new ArrayList<>();
+        int size = stack.size();
+        for (int i = 0; i < size; i++) {
+            long tmp = stack.pop();
+            path.add(tmp);
+        }
+        return path;
     }
 
     /**
