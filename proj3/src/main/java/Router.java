@@ -62,7 +62,7 @@ public class Router {
         distTo.put(start, 0.0);
         edgeTo.put(start, start);
         minHeap.add(start);
-        while (true) {
+        while (!minHeap.isEmpty()) {
             long w = minHeap.remove();
             if (w == end) {
                 while (true) {
@@ -73,7 +73,13 @@ public class Router {
                         break;
                     }
                 }
-                break;
+                ArrayList<Long> path = new ArrayList<>();
+                int size = stack.size();
+                for (int i = 0; i < size; i++) {
+                    long tmp = stack.pop();
+                    path.add(tmp);
+                }
+                return path;
             }
             for (long v : g.adjacent(w)) {
                 double tmpDistance = distTo.get(w) + g.distance(w, v);
@@ -96,13 +102,7 @@ public class Router {
                 }
             }
         }
-        ArrayList<Long> path = new ArrayList<>();
-        int size = stack.size();
-        for (int i = 0; i < size; i++) {
-            long tmp = stack.pop();
-            path.add(tmp);
-        }
-        return path;
+        return null;
     }
 
     /**
