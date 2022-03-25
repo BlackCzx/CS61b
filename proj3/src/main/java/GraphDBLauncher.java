@@ -34,7 +34,14 @@ public class GraphDBLauncher {
         //System.out.println(" has longitude, latitude of: " + g.lon(v) + ", " + g.lat(v));
 
         //System.out.println("To get started, uncomment print statements in GraphBuildingHandler.");
+        long startTime = System.currentTimeMillis();
+        for (int i = 0; i < 5000; i++) {
+            g.getLocationsByPrefix("i");
+        }
 
-        g.getLocationsByPrefix(" ");
+        long endTime = System.currentTimeMillis();
+        System.out.println();
+        System.out.print("Using total time: ");
+        System.out.println((double) (endTime - startTime) / 1000.0);
     }
 }

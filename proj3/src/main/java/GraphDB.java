@@ -6,10 +6,8 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
+import java.util.*;
+
 /**
  * Graph for storing all of the intersection (vertex) and road (edge) information.
  * Uses your GraphBuildingHandler to convert the XML files into a graph. Your
@@ -96,11 +94,15 @@ public class GraphDB {
         private class TrieNode {
             boolean exists;
             TrieNode[] links;
+            int[] linkIndex;
+            int size;
             ArrayList<Long> ids;
 
             TrieNode() {
                 exists = false;
                 links = new TrieNode[27];
+                linkIndex = new int[27];
+                size = 0;
                 ids = new ArrayList<>();
             }
         }
@@ -130,6 +132,10 @@ public class GraphDB {
                 index = 26;
             } else {
                 index = tmp - 'a';
+            }
+            if (tn.links[index] == null) {
+                tn.linkIndex[tn.size] = index;
+                tn.size++;
             }
             tn.links[index] = add(tn.links[index], s, d + 1, id);
             return tn;
@@ -168,19 +174,40 @@ public class GraphDB {
                     array.add(nd.location);
                 }
             }
+
+            for (int i = 0; i < tn.size; i++) {
+                int index = tn.linkIndex[i];
+                String tmp;
+                if (index != 26) {
+                    tmp = String.valueOf((char) ('a' + index));
+                } else {
+                    tmp = " ";
+                }
+                String newPrefix = prefix + tmp;
+                traverse(tn.links[index], newPrefix, array);
+            }
+            /*
             for (int i = 0; i < 26; i++) {
                 String tmp = String.valueOf((char) ('a' + i));
                 String newPrefix = prefix + tmp;
                 traverse(tn.links[i], newPrefix, array);
             }
             traverse(tn.links[26], prefix + ' ', array);
+             */
             return;
         }
 
         public ArrayList<String> getAllStrings(String prefix) {
+            long startTime = System.currentTimeMillis();
             TrieNode tn = find(prefix);
+            long endTime1 = System.currentTimeMillis();
             ArrayList<String> ret = new ArrayList<>();
             traverse(tn, prefix, ret);
+            long endTime2 = System.currentTimeMillis();
+            //System.out.print("Operation find using time: ");
+            //System.out.println((double) (endTime1 - startTime) / 1000.0);
+            //System.out.print("Operation traverse using time: ");
+            //System.out.println((double) (endTime2 - startTime) / 1000.0);
             return ret;
         }
 
@@ -354,9 +381,14 @@ public class GraphDB {
     }
 
     public ArrayList<String> getLocationsByPrefix(String prefix) {
-        System.out.println("here!!");
         //trie.test();
+        //System.out.println("here!");
         ArrayList<String> ret =  trie.getAllStrings(cleanString(prefix));
+        /*
+        for (String s : ret) {
+            System.out.println(s);
+        }
+         */
         return ret;
         //return null;
     }
