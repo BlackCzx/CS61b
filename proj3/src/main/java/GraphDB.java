@@ -399,7 +399,7 @@ public class GraphDB {
     }
 
     public List<Map<String, Object>> getLocations(String fullName) {
-        ArrayList<Long> ids = trie.findIds(fullName);
+        ArrayList<Long> ids = trie.findIds(cleanString(fullName));
         List<Map<String, Object>> ret = new ArrayList<>();
         for (long id : ids) {
             Map<String, Object> map = new HashMap<>();
