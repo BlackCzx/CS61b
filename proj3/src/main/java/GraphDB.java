@@ -1,3 +1,4 @@
+import jdk.jpackage.internal.CLIHelp;
 import org.xml.sax.SAXException;
 
 import java.io.File;
@@ -26,23 +27,32 @@ public class GraphDB {
         private double lon;
         private double lat;
         private ArrayList<Node> adj;
+        private String location;
 
         Node(long id, double lon, double lat) {
             this.id = id;
             this.lon = lon;
             this.lat = lat;
             this.adj = new ArrayList<>();
+            this.location = null;
         }
     }
 
     private final ArrayList<Node> graph = new ArrayList<>();
     private HashMap<Long, Integer> indexMap = new HashMap<>();
+    private Trie trie;
 
     public void addNode(long id, double lon, double lat) {
         int index = graph.size();
         Node nd = new Node(id, lon, lat);
         graph.add(nd);
         indexMap.put(id, index);
+    }
+
+    public void addLocation(long id, String location) {
+        int index = indexMap.get(id);
+        Node nd = graph.get(index);
+        nd.location = location;
     }
 
     public void addEdge(long id1, long id2) {
@@ -79,6 +89,93 @@ public class GraphDB {
         clean();
     }
 
+    private class Trie {
+
+        private class TrieNode {
+            boolean exists;
+            TrieNode[] links;
+
+            TrieNode() {
+                exists = false;
+                links = new TrieNode[27];
+            }
+        }
+
+        private TrieNode root;
+
+        Trie() {
+            root = new TrieNode();
+        }
+
+        public void add(String s) {
+            add(root, s, 0);
+        }
+
+        private TrieNode add(TrieNode tn, String s, int d) {
+            if (tn == null) {
+                tn = new TrieNode();
+            }
+            if (d == s.length()) {
+                tn.exists = true;
+                return tn;
+            }
+            char tmp = s.charAt(d);
+            int index;
+            if (tmp == ' ') {
+                index = 26;
+            } else {
+                index = tmp - 'a';
+            }
+            add(tn.links[index], s, d + 1);
+            return tn;
+        }
+
+        private TrieNode find(String prefix) {
+            return find(root, prefix, 0);
+        }
+
+        private TrieNode find(TrieNode tn, String prefix, int d) {
+            if (tn == null) {
+                return null;
+            }
+            if (d == prefix.length()) {
+                return tn;
+            }
+            char tmp = prefix.charAt(d);
+            int index;
+            if (tmp == ' ') {
+                index = 26;
+            } else {
+                index = tmp - 'a';
+            }
+            return find(tn.links[index], prefix, d + 1);
+        }
+
+        private void traverse(TrieNode tn, String prefix, ArrayList<String> array) {
+            if (tn == null) {
+                return;
+            }
+            if (tn.exists) {
+                array.add(prefix);
+            }
+            for (int i = 0; i < 26; i++) {
+                String tmp = String.valueOf('a' + i);
+                String newPrefix = prefix + tmp;
+                traverse(tn, newPrefix, array);
+            }
+            traverse(tn, prefix + ' ', array);
+            return;
+        }
+
+        public Iterable<String> getAllStrings(String prefix) {
+            TrieNode tn = find(prefix);
+            ArrayList<String> ret = new ArrayList<>();
+            traverse(tn, prefix, ret);
+            return ret;
+        }
+    }
+
+
     /**
      * Helper to process strings into their "cleaned" form, ignoring punctuation and capitalization.
      * @param s Input string.
@@ -93,16 +190,13 @@ public class GraphDB {
      *  While this does not guarantee that any two nodes in the remaining graph are connected,
      *  we can reasonably assume this since typically roads are connected.
      */
-    private void clean2() {
-        int n = 0;
-        for (int i = 0; i < graph.size(); i++) {
-            Node nd = graph.get(i);
-            if (nd.adj.isEmpty()) {
-                n++;
+    private void generateTrie() {
+        trie = new Trie();
+        for (Node nd : graph) {
+            if (nd.location != null) {
+                trie.add(cleanString(nd.location));
             }
         }
-        System.out.println(graph.size());
-        System.out.println(n);
     }
 
     private void clean() {
@@ -121,6 +215,7 @@ public class GraphDB {
         for (int i = 0; i < graph.size(); i++) {
             indexMap.put(graph.get(i).id, i);
         }
+        generateTrie();
     }
 
     /**
@@ -243,4 +338,13 @@ public class GraphDB {
         Node nd = graph.get(index);
         return nd.lat;
     }
+
+    public Iterable<String> getLocationsByPrefix(String prefix) {
+        return trie.getAllStrings(prefix);
+    }
+
+    public Iterable<HashMap> getLocations() {
+        return null;
+    }
+
 }

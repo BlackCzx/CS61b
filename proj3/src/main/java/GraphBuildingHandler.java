@@ -38,6 +38,7 @@ public class GraphBuildingHandler extends DefaultHandler {
                     "residential", "living_street", "motorway_link", "trunk_link", "primary_link",
                     "secondary_link", "tertiary_link"));
     private String activeState = "";
+    private long currentNodeId = 0L;
     private final GraphDB g;
 
     private ArrayList<Long> ids = new ArrayList<>();
@@ -79,6 +80,7 @@ public class GraphBuildingHandler extends DefaultHandler {
             double lon = Double.parseDouble(attributes.getValue("lon"));
             double lat = Double.parseDouble(attributes.getValue("lat"));
             g.addNode(id, lon, lat);
+            currentNodeId = id;
             /* TODO Use the above information to save a "node" to somewhere. */
             /* Hint: A graph-like structure would be nice. */
 
@@ -116,8 +118,10 @@ public class GraphBuildingHandler extends DefaultHandler {
 //            System.out.println("Tag with k=" + k + ", v=" + v + ".");
         } else if (activeState.equals("node") && qName.equals("tag") && attributes.getValue("k")
                 .equals("name")) {
-            System.out.println("for grades!");
+            //System.out.println("for grades!");
             /* While looking at a node, we found a <tag...> with k="name". */
+            String v = attributes.getValue("v");
+            g.addLocation(currentNodeId, v);
             /* Hint: Since we found this <tag...> INSIDE a node, we should probably remember which
             node this tag belongs to. Remember XML is parsed top-to-bottom, so probably it's the
             last node that you looked at (check the first if-case). */
