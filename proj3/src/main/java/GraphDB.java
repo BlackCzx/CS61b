@@ -166,7 +166,7 @@ public class GraphDB {
             return;
         }
 
-        public Iterable<String> getAllStrings(String prefix) {
+        public ArrayList<String> getAllStrings(String prefix) {
             TrieNode tn = find(prefix);
             ArrayList<String> ret = new ArrayList<>();
             traverse(tn, prefix, ret);
@@ -338,11 +338,11 @@ public class GraphDB {
         return nd.lat;
     }
 
-    public Iterable<String> getLocationsByPrefix(String prefix) {
+    public ArrayList<String> getLocationsByPrefix(String prefix) {
         return trie.getAllStrings(prefix);
     }
 
-    public Iterable<HashMap> getLocations(String prefix) {
+    public ArrayList<HashMap<String, Object>> getLocations(String prefix) {
         return null;
     }
 
