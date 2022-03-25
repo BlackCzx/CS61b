@@ -1,4 +1,3 @@
-import jdk.jpackage.internal.CLIHelp;
 import org.xml.sax.SAXException;
 
 import java.io.File;
