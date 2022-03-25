@@ -343,7 +343,7 @@ public class GraphDB {
         return trie.getAllStrings(prefix);
     }
 
-    public Iterable<HashMap> getLocations() {
+    public Iterable<HashMap> getLocations(String prefix) {
         return null;
     }
 
