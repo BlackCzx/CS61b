@@ -145,6 +145,11 @@ public class GraphDB {
             return find(root, prefix, 0);
         }
 
+        public ArrayList<Long> findIds(String fullName) {
+            TrieNode tn = find(root, fullName, 0);
+            return tn.ids;
+        }
+
         private TrieNode find(TrieNode tn, String prefix, int d) {
             if (tn == null) {
                 return null;
@@ -393,8 +398,19 @@ public class GraphDB {
         //return null;
     }
 
-    public List<Map<String, Object>> getLocations(String prefix) {
-        return null;
+    public List<Map<String, Object>> getLocations(String fullName) {
+        ArrayList<Long> ids = trie.findIds(fullName);
+        List<Map<String, Object>> ret = new ArrayList<>();
+        for (long id : ids) {
+            Map<String, Object> map = new HashMap<>();
+            int index = indexMapWithName.get(id);
+            Node nd = graphWithName.get(index);
+            map.put("lat", nd.lat);
+            map.put("lon", nd.lon);
+            map.put("name", nd.location);
+            map.put("id", nd.id);
+            ret.add(map);
+        }
+        return ret;
     }
-
 }
