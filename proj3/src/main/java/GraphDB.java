@@ -96,11 +96,12 @@ public class GraphDB {
         private class TrieNode {
             boolean exists;
             TrieNode[] links;
-            long id;
+            ArrayList<Long> ids;
 
             TrieNode() {
                 exists = false;
                 links = new TrieNode[27];
+                ids = new ArrayList<>();
             }
         }
 
@@ -120,7 +121,7 @@ public class GraphDB {
             }
             if (d == s.length()) {
                 tn.exists = true;
-                tn.id = id;
+                tn.ids.add(id);
                 return tn;
             }
             char tmp = s.charAt(d);
@@ -160,10 +161,12 @@ public class GraphDB {
                 return;
             }
             if (tn.exists) {
-                int index = indexMapWithName.get(tn.id);
-                Node nd = graphWithName.get(index);
-                //System.out.println(nd.location);
-                array.add(nd.location);
+                for (long id : tn.ids) {
+                    int index = indexMapWithName.get(id);
+                    Node nd = graphWithName.get(index);
+                    //System.out.println(nd.location);
+                    array.add(nd.location);
+                }
             }
             for (int i = 0; i < 26; i++) {
                 String tmp = String.valueOf((char) ('a' + i));
