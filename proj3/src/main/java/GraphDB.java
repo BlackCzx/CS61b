@@ -357,9 +357,6 @@ public class GraphDB {
         System.out.println("here!!");
         //trie.test();
         ArrayList<String> ret =  trie.getAllStrings(cleanString(prefix));
-        for (String s : ret) {
-            System.out.println(s);
-        }
         return ret;
         //return null;
     }
