@@ -395,7 +395,6 @@ public class GraphDB {
         }
          */
         return ret;
-        //return null;
     }
 
     public List<Map<String, Object>> getLocations(String fullName) {
