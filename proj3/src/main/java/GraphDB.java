@@ -8,7 +8,8 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.Map;
+import java.util.List;
 /**
  * Graph for storing all of the intersection (vertex) and road (edge) information.
  * Uses your GraphBuildingHandler to convert the XML files into a graph. Your
@@ -342,7 +343,7 @@ public class GraphDB {
         return trie.getAllStrings(prefix);
     }
 
-    public ArrayList<HashMap<String, Object>> getLocations(String prefix) {
+    public List<Map<String, Object>> getLocations(String prefix) {
         return null;
     }
 
