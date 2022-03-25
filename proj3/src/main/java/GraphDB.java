@@ -38,9 +38,11 @@ public class GraphDB {
         }
     }
 
-    private final ArrayList<Node> graph = new ArrayList<>();
+    private ArrayList<Node> graph = new ArrayList<>();
+    private ArrayList<Node> graphWithName;
     private HashMap<Long, Integer> indexMap = new HashMap<>();
-    private Trie trie;
+    private HashMap<Long, Integer> indexMapWithName;
+    private Trie trie = new Trie();
 
     public void addNode(long id, double lon, double lat) {
         int index = graph.size();
@@ -94,6 +96,7 @@ public class GraphDB {
         private class TrieNode {
             boolean exists;
             TrieNode[] links;
+            long id;
 
             TrieNode() {
                 exists = false;
@@ -107,16 +110,17 @@ public class GraphDB {
             root = new TrieNode();
         }
 
-        public void add(String s) {
-            add(root, s, 0);
+        public void add(String s, long id) {
+            add(root, s, 0, id);
         }
 
-        private TrieNode add(TrieNode tn, String s, int d) {
+        private TrieNode add(TrieNode tn, String s, int d, long id) {
             if (tn == null) {
                 tn = new TrieNode();
             }
             if (d == s.length()) {
                 tn.exists = true;
+                tn.id = id;
                 return tn;
             }
             char tmp = s.charAt(d);
@@ -126,7 +130,7 @@ public class GraphDB {
             } else {
                 index = tmp - 'a';
             }
-            add(tn.links[index], s, d + 1);
+            tn.links[index] = add(tn.links[index], s, d + 1, id);
             return tn;
         }
 
@@ -156,14 +160,17 @@ public class GraphDB {
                 return;
             }
             if (tn.exists) {
-                array.add(prefix);
+                int index = indexMapWithName.get(tn.id);
+                Node nd = graphWithName.get(index);
+                //System.out.println(nd.location);
+                array.add(nd.location);
             }
             for (int i = 0; i < 26; i++) {
-                String tmp = String.valueOf('a' + i);
+                String tmp = String.valueOf((char) ('a' + i));
                 String newPrefix = prefix + tmp;
-                traverse(tn, newPrefix, array);
+                traverse(tn.links[i], newPrefix, array);
             }
-            traverse(tn, prefix + ' ', array);
+            traverse(tn.links[26], prefix + ' ', array);
             return;
         }
 
@@ -172,6 +179,14 @@ public class GraphDB {
             ArrayList<String> ret = new ArrayList<>();
             traverse(tn, prefix, ret);
             return ret;
+        }
+
+        public void test() {
+            for (int i = 0; i < 26; i++) {
+                if (root.links[i] != null) {
+                    System.out.println((char) ('a' + i));
+                }
+            }
         }
     }
 
@@ -185,21 +200,17 @@ public class GraphDB {
         return s.replaceAll("[^a-zA-Z ]", "").toLowerCase();
     }
 
+    public void addToTrie(String s, long id) {
+        trie.add(cleanString(s), id);
+    }
+
     /**
      *  Remove nodes with no connections from the graph.
      *  While this does not guarantee that any two nodes in the remaining graph are connected,
      *  we can reasonably assume this since typically roads are connected.
      */
-    private void generateTrie() {
-        trie = new Trie();
-        for (Node nd : graph) {
-            if (nd.location != null) {
-                trie.add(cleanString(nd.location));
-            }
-        }
-    }
-
     private void clean() {
+
         int n = 0;
         ArrayList<Node> tmp = new ArrayList<>();
         for (Node nd : graph) {
@@ -210,12 +221,12 @@ public class GraphDB {
                 removeNode(nd);
             }
         }
-        tmp = null;
+        graphWithName = tmp;
+        indexMapWithName = indexMap;
         indexMap = new HashMap<>();
         for (int i = 0; i < graph.size(); i++) {
             indexMap.put(graph.get(i).id, i);
         }
-        generateTrie();
     }
 
     /**
@@ -340,7 +351,14 @@ public class GraphDB {
     }
 
     public ArrayList<String> getLocationsByPrefix(String prefix) {
-        return trie.getAllStrings(prefix);
+        System.out.println("here!!");
+        //trie.test();
+        ArrayList<String> ret =  trie.getAllStrings(cleanString(prefix));
+        for (String s : ret) {
+            System.out.println(s);
+        }
+        return ret;
+        //return null;
     }
 
     public List<Map<String, Object>> getLocations(String prefix) {

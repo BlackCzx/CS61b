@@ -106,14 +106,14 @@ public class GraphBuildingHandler extends DefaultHandler {
             String k = attributes.getValue("k");
             String v = attributes.getValue("v");
             if (k.equals("maxspeed")) {
-                System.out.println("Max Speed: " + v);
+                //System.out.println("Max Speed: " + v);
             } else if (k.equals("highway")) {
                 //System.out.println("Highway type: " + v);
                 if (ALLOWED_HIGHWAY_TYPES.contains(v)) {
                     isValidWay = true;
                 }
             } else if (k.equals("name")) {
-                System.out.println("Way Name: " + v);
+                //System.out.println("Way Name: " + v);
             }
 //            System.out.println("Tag with k=" + k + ", v=" + v + ".");
         } else if (activeState.equals("node") && qName.equals("tag") && attributes.getValue("k")
@@ -122,6 +122,7 @@ public class GraphBuildingHandler extends DefaultHandler {
             /* While looking at a node, we found a <tag...> with k="name". */
             String v = attributes.getValue("v");
             g.addLocation(currentNodeId, v);
+            g.addToTrie(v, currentNodeId);
             /* Hint: Since we found this <tag...> INSIDE a node, we should probably remember which
             node this tag belongs to. Remember XML is parsed top-to-bottom, so probably it's the
             last node that you looked at (check the first if-case). */
